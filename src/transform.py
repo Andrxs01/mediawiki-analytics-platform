@@ -27,11 +27,16 @@ def transform_data(df):
 
     bad_patterns = [
         "Wikipedia:",
+        "Wikipédia:",
         "Especial:",
         "Special:",
+        "Spezial:",
         "Template:",
         "Category:",
-        "File:"
+        "File:",
+        "Portal:",
+        "Help:",
+        "Ayuda:"
     ]
 
     for pattern in bad_patterns:
@@ -42,4 +47,23 @@ def transform_data(df):
             )
         ]
 
+    # eliminar páginas conocidas
+    bad_pages = [
+        ".xxx",
+        "Main_Page",
+        "Accueil_principal",
+        "Página_principal"
+    ]
+
+    df = df[
+        ~df["page_title"].isin(bad_pages)
+    ]
+    
+    df = df[
+    ~df["page_title"].str.contains(
+        "Recherche|Buscar|Suche",
+        case=False,
+        na=False
+    )
+  ]
     return df
